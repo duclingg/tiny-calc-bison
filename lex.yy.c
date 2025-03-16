@@ -457,7 +457,7 @@ char *yytext;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tiny-calc.tab.h"
+#include "tiny-calc.h"
 #line 461 "lex.yy.c"
 #line 462 "lex.yy.c"
 

@@ -78,31 +78,34 @@ program:
     | program line
     ;
 
-line: EOL 
-    | expr EOL { 
+line: EOL { 
         calc_count++;
-        printf("[%d] =%g\n", calc_count, $1); 
+        printf("[%d] ", calc_count);
+    }
+    | expr EOL { 
+        printf("=%g\n[%d] ", $1, calc_count + 1); 
+        calc_count++;
     }
     | IDENTIFIER ASSIGN expr EOL {
-        calc_count++;
         set_variable($1, $3);
-        printf("[%d] Variable %s is assigned to %g\n", calc_count, $1, $3);
+        printf("Variable %s is assigned to %g\n[%d] ", $1, $3, calc_count + 1);
         free($1);
+        calc_count++;
     }
     | IDENTIFIER EOL {
-        calc_count++;
         int index = find_variable($1);
         if (index >= 0) {
-            printf("[%d] =%g\n", calc_count, vars[index].value);
+            printf("=%g\n[%d] ", vars[index].value, calc_count + 1);
         } else {
-            printf("[%d] Error: \"Variable, %s, not found!\" at calculation: %d\n", 
-                   calc_count, $1, calc_count);
+            printf("Error: \"Variable, %s, not found!\" at calculation: %d\n[%d] ", 
+                   $1, calc_count, calc_count + 1);
         }
         free($1);
+        calc_count++;
     }
     | error EOL { 
+        printf("Error: \"syntax error\" at calculation: %d\n[%d] ", calc_count, calc_count + 1); 
         calc_count++;
-        printf("[%d] Error: \"syntax error\" at calculation: %d\n", calc_count, calc_count); 
         yyerrok; 
     }
     ;
@@ -116,9 +119,9 @@ term: power { $$ = $1; }
     | term MULTIPLY power { $$ = $1 * $3; }
     | term DIVIDE power { 
         if ($3 == 0) {
+            printf("Error: \"divide by zero !!\" at calculation: %d\n[%d] ", 
+                   calc_count, calc_count + 1);
             calc_count++;
-            printf("[%d] Error: \"divide by zero !!\" at calculation: %d\n", 
-                   calc_count, calc_count);
             $$ = 0;
             YYERROR;
         } else {
@@ -142,9 +145,10 @@ factor: NUMBER { $$ = $1; }
         if (index >= 0) {
             $$ = vars[index].value;
         } else {
-            printf("[%d] Error: \"Variable, %s, not found!\" at calculation: %d\n", 
-                   calc_count, $1, calc_count);
+            printf("Error: \"Variable, %s, not found!\" at calculation: %d\n[%d] ", 
+                   $1, calc_count, calc_count + 1);
             free($1);
+            calc_count++;
             YYERROR;
         }
         free($1);
@@ -159,7 +163,7 @@ void yyerror(const char *s) {
 }
 
 int main() {
-    printf("Enter Any Arithmetic expression.\n");
+    printf("Enter Any Arithmetic expression.\n[1] ");
     yyparse();
     return 0;
 }

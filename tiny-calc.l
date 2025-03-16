@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tiny-calc.tab.h"
+#include "tiny-calc.h"
 %}
 
 digit [0-9]

@@ -161,7 +161,7 @@ double get_variable(char* name) {
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 
 /* Enabling verbose error messages.  */
@@ -185,7 +185,7 @@ typedef union YYSTYPE
     char* sval;
 }
 /* Line 193 of yacc.c.  */
-#line 189 "tiny-calc.tab.c"
+#line 189 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -198,7 +198,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 202 "tiny-calc.tab.c"
+#line 202 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -489,9 +489,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    77,    77,    78,    81,    82,    86,    92,   103,   110,
-     111,   112,   115,   116,   117,   130,   131,   134,   135,   136,
-     139,   140,   152
+       0,    77,    77,    78,    81,    85,    89,    95,   106,   113,
+     114,   115,   118,   119,   120,   133,   134,   137,   138,   139,
+     142,   143,   156
 };
 #endif
 
@@ -1411,142 +1411,151 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 5:
-#line 82 "tiny-calc.y"
+        case 4:
+#line 81 "tiny-calc.y"
     { 
         calc_count++;
-        printf("[%d] =%g\n", calc_count, (yyvsp[(1) - (2)].dval)); 
-    ;}
+        printf("[%d] ", calc_count);
+    }
+    break;
+
+  case 5:
+#line 85 "tiny-calc.y"
+    { 
+        printf("=%g\n[%d] ", (yyvsp[(1) - (2)].dval), calc_count + 1); 
+        calc_count++;
+    }
     break;
 
   case 6:
-#line 86 "tiny-calc.y"
+#line 89 "tiny-calc.y"
     {
-        calc_count++;
         set_variable((yyvsp[(1) - (4)].sval), (yyvsp[(3) - (4)].dval));
-        printf("[%d] Variable %s is assigned to %g\n", calc_count, (yyvsp[(1) - (4)].sval), (yyvsp[(3) - (4)].dval));
+        printf("Variable %s is assigned to %g\n[%d] ", (yyvsp[(1) - (4)].sval), (yyvsp[(3) - (4)].dval), calc_count + 1);
         free((yyvsp[(1) - (4)].sval));
-    ;}
+        calc_count++;
+    }
     break;
 
   case 7:
-#line 92 "tiny-calc.y"
+#line 95 "tiny-calc.y"
     {
-        calc_count++;
         int index = find_variable((yyvsp[(1) - (2)].sval));
         if (index >= 0) {
-            printf("[%d] =%g\n", calc_count, vars[index].value);
+            printf("=%g\n[%d] ", vars[index].value, calc_count + 1);
         } else {
-            printf("[%d] Error: \"Variable, %s, not found!\" at calculation: %d\n", 
-                   calc_count, (yyvsp[(1) - (2)].sval), calc_count);
+            printf("Error: \"Variable, %s, not found!\" at calculation: %d\n[%d] ", 
+                   (yyvsp[(1) - (2)].sval), calc_count, calc_count + 1);
         }
         free((yyvsp[(1) - (2)].sval));
-    ;}
+        calc_count++;
+    }
     break;
 
   case 8:
-#line 103 "tiny-calc.y"
+#line 106 "tiny-calc.y"
     { 
+        printf("Error: \"syntax error\" at calculation: %d\n[%d] ", calc_count, calc_count + 1); 
         calc_count++;
-        printf("[%d] Error: \"syntax error\" at calculation: %d\n", calc_count, calc_count); 
         yyerrok; 
-    ;}
+    }
     break;
 
   case 9:
-#line 110 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (1)].dval); ;}
+#line 113 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (1)].dval); }
     break;
 
   case 10:
-#line 111 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (3)].dval) + (yyvsp[(3) - (3)].dval); ;}
+#line 114 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (3)].dval) + (yyvsp[(3) - (3)].dval); }
     break;
 
   case 11:
-#line 112 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (3)].dval) - (yyvsp[(3) - (3)].dval); ;}
+#line 115 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (3)].dval) - (yyvsp[(3) - (3)].dval); }
     break;
 
   case 12:
-#line 115 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (1)].dval); ;}
+#line 118 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (1)].dval); }
     break;
 
   case 13:
-#line 116 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (3)].dval) * (yyvsp[(3) - (3)].dval); ;}
+#line 119 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (3)].dval) * (yyvsp[(3) - (3)].dval); }
     break;
 
   case 14:
-#line 117 "tiny-calc.y"
+#line 120 "tiny-calc.y"
     { 
         if ((yyvsp[(3) - (3)].dval) == 0) {
+            printf("Error: \"divide by zero !!\" at calculation: %d\n[%d] ", 
+                   calc_count, calc_count + 1);
             calc_count++;
-            printf("[%d] Error: \"divide by zero !!\" at calculation: %d\n", 
-                   calc_count, calc_count);
             (yyval.dval) = 0;
             YYERROR;
         } else {
             (yyval.dval) = (yyvsp[(1) - (3)].dval) / (yyvsp[(3) - (3)].dval);
         }
-    ;}
+    }
     break;
 
   case 15:
-#line 130 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (1)].dval); ;}
+#line 133 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (1)].dval); }
     break;
 
   case 16:
-#line 131 "tiny-calc.y"
-    { (yyval.dval) = pow((yyvsp[(1) - (3)].dval), (yyvsp[(3) - (3)].dval)); ;}
+#line 134 "tiny-calc.y"
+    { (yyval.dval) = pow((yyvsp[(1) - (3)].dval), (yyvsp[(3) - (3)].dval)); }
     break;
 
   case 17:
-#line 134 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (1)].dval); ;}
+#line 137 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (1)].dval); }
     break;
 
   case 18:
-#line 135 "tiny-calc.y"
-    { (yyval.dval) = -(yyvsp[(2) - (2)].dval); ;}
+#line 138 "tiny-calc.y"
+    { (yyval.dval) = -(yyvsp[(2) - (2)].dval); }
     break;
 
   case 19:
-#line 136 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(2) - (2)].dval); ;}
+#line 139 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(2) - (2)].dval); }
     break;
 
   case 20:
-#line 139 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(1) - (1)].dval); ;}
+#line 142 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(1) - (1)].dval); }
     break;
 
   case 21:
-#line 140 "tiny-calc.y"
+#line 143 "tiny-calc.y"
     { 
         int index = find_variable((yyvsp[(1) - (1)].sval));
         if (index >= 0) {
             (yyval.dval) = vars[index].value;
         } else {
-            printf("[%d] Error: \"Variable, %s, not found!\" at calculation: %d\n", 
-                   calc_count, (yyvsp[(1) - (1)].sval), calc_count);
+            printf("Error: \"Variable, %s, not found!\" at calculation: %d\n[%d] ", 
+                   (yyvsp[(1) - (1)].sval), calc_count, calc_count + 1);
             free((yyvsp[(1) - (1)].sval));
+            calc_count++;
             YYERROR;
         }
         free((yyvsp[(1) - (1)].sval));
-    ;}
+    }
     break;
 
   case 22:
-#line 152 "tiny-calc.y"
-    { (yyval.dval) = (yyvsp[(2) - (3)].dval); ;}
+#line 156 "tiny-calc.y"
+    { (yyval.dval) = (yyvsp[(2) - (3)].dval); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1550 "tiny-calc.tab.c"
+#line 1559 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1760,7 +1769,7 @@ yyreturn:
 }
 
 
-#line 155 "tiny-calc.y"
+#line 159 "tiny-calc.y"
 
 
 void yyerror(const char *s) {
@@ -1768,7 +1777,7 @@ void yyerror(const char *s) {
 }
 
 int main() {
-    printf("Enter Any Arithmetic expression.\n");
+    printf("Enter Any Arithmetic expression.\n[1] ");
     yyparse();
     return 0;
 }
