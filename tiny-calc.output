@@ -1,0 +1,472 @@
+Terminals which are not used
+
+   INVALID
+
+
+State 5 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: /* empty */
+    2        | program line
+
+    3 line: EOL
+    4     | expr EOL
+    5     | IDENTIFIER ASSIGN expr EOL
+    6     | IDENTIFIER EOL
+    7     | error EOL
+
+    8 expr: term
+    9     | expr PLUS term
+   10     | expr MINUS term
+
+   11 term: power
+   12     | term MULTIPLY power
+   13     | term DIVIDE power
+
+   14 power: unary
+   15      | power POWER unary
+
+   16 unary: factor
+   17      | MINUS unary
+   18      | PLUS unary
+
+   19 factor: NUMBER
+   20       | IDENTIFIER
+   21       | LPAREN expr RPAREN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256) 7
+NUMBER (258) 19
+IDENTIFIER (259) 5 6 20
+PLUS (260) 9 18
+MINUS (261) 10 17
+MULTIPLY (262) 12
+DIVIDE (263) 13
+POWER (264) 15
+LPAREN (265) 21
+RPAREN (266) 21
+ASSIGN (267) 5
+EOL (268) 3 4 5 6 7
+INVALID (269)
+UPLUS (270)
+UMINUS (271)
+
+
+Nonterminals, with rules where they appear
+
+$accept (17)
+    on left: 0
+program (18)
+    on left: 1 2, on right: 0 2
+line (19)
+    on left: 3 4 5 6 7, on right: 2
+expr (20)
+    on left: 8 9 10, on right: 4 5 9 10 21
+term (21)
+    on left: 11 12 13, on right: 8 9 10 12 13
+power (22)
+    on left: 14 15, on right: 11 12 13 15
+unary (23)
+    on left: 16 17 18, on right: 14 15 17 18
+factor (24)
+    on left: 19 20 21, on right: 16
+
+
+state 0
+
+    0 $accept: . program $end
+
+    $default  reduce using rule 1 (program)
+
+    program  go to state 1
+
+
+state 1
+
+    0 $accept: program . $end
+    2 program: program . line
+
+    $end        shift, and go to state 2
+    error       shift, and go to state 3
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 5
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+    EOL         shift, and go to state 9
+
+    line    go to state 10
+    expr    go to state 11
+    term    go to state 12
+    power   go to state 13
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 2
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 3
+
+    7 line: error . EOL
+
+    EOL  shift, and go to state 16
+
+
+state 4
+
+   19 factor: NUMBER .
+
+    $default  reduce using rule 19 (factor)
+
+
+state 5
+
+    5 line: IDENTIFIER . ASSIGN expr EOL
+    6     | IDENTIFIER . EOL
+   20 factor: IDENTIFIER .
+
+    ASSIGN  shift, and go to state 17
+    EOL     shift, and go to state 18
+
+    EOL       [reduce using rule 20 (factor)]
+    $default  reduce using rule 20 (factor)
+
+
+state 6
+
+   18 unary: PLUS . unary
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    unary   go to state 20
+    factor  go to state 15
+
+
+state 7
+
+   17 unary: MINUS . unary
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    unary   go to state 21
+    factor  go to state 15
+
+
+state 8
+
+   21 factor: LPAREN . expr RPAREN
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    expr    go to state 22
+    term    go to state 12
+    power   go to state 13
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 9
+
+    3 line: EOL .
+
+    $default  reduce using rule 3 (line)
+
+
+state 10
+
+    2 program: program line .
+
+    $default  reduce using rule 2 (program)
+
+
+state 11
+
+    4 line: expr . EOL
+    9 expr: expr . PLUS term
+   10     | expr . MINUS term
+
+    PLUS   shift, and go to state 23
+    MINUS  shift, and go to state 24
+    EOL    shift, and go to state 25
+
+
+state 12
+
+    8 expr: term .
+   12 term: term . MULTIPLY power
+   13     | term . DIVIDE power
+
+    MULTIPLY  shift, and go to state 26
+    DIVIDE    shift, and go to state 27
+
+    $default  reduce using rule 8 (expr)
+
+
+state 13
+
+   11 term: power .
+   15 power: power . POWER unary
+
+    POWER  shift, and go to state 28
+
+    $default  reduce using rule 11 (term)
+
+
+state 14
+
+   14 power: unary .
+
+    $default  reduce using rule 14 (power)
+
+
+state 15
+
+   16 unary: factor .
+
+    $default  reduce using rule 16 (unary)
+
+
+state 16
+
+    7 line: error EOL .
+
+    $default  reduce using rule 7 (line)
+
+
+state 17
+
+    5 line: IDENTIFIER ASSIGN . expr EOL
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    expr    go to state 29
+    term    go to state 12
+    power   go to state 13
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 18
+
+    6 line: IDENTIFIER EOL .
+
+    $default  reduce using rule 6 (line)
+
+
+state 19
+
+   20 factor: IDENTIFIER .
+
+    $default  reduce using rule 20 (factor)
+
+
+state 20
+
+   18 unary: PLUS unary .
+
+    $default  reduce using rule 18 (unary)
+
+
+state 21
+
+   17 unary: MINUS unary .
+
+    $default  reduce using rule 17 (unary)
+
+
+state 22
+
+    9 expr: expr . PLUS term
+   10     | expr . MINUS term
+   21 factor: LPAREN expr . RPAREN
+
+    PLUS    shift, and go to state 23
+    MINUS   shift, and go to state 24
+    RPAREN  shift, and go to state 30
+
+
+state 23
+
+    9 expr: expr PLUS . term
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    term    go to state 31
+    power   go to state 13
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 24
+
+   10 expr: expr MINUS . term
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    term    go to state 32
+    power   go to state 13
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 25
+
+    4 line: expr EOL .
+
+    $default  reduce using rule 4 (line)
+
+
+state 26
+
+   12 term: term MULTIPLY . power
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    power   go to state 33
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 27
+
+   13 term: term DIVIDE . power
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    power   go to state 34
+    unary   go to state 14
+    factor  go to state 15
+
+
+state 28
+
+   15 power: power POWER . unary
+
+    NUMBER      shift, and go to state 4
+    IDENTIFIER  shift, and go to state 19
+    PLUS        shift, and go to state 6
+    MINUS       shift, and go to state 7
+    LPAREN      shift, and go to state 8
+
+    unary   go to state 35
+    factor  go to state 15
+
+
+state 29
+
+    5 line: IDENTIFIER ASSIGN expr . EOL
+    9 expr: expr . PLUS term
+   10     | expr . MINUS term
+
+    PLUS   shift, and go to state 23
+    MINUS  shift, and go to state 24
+    EOL    shift, and go to state 36
+
+
+state 30
+
+   21 factor: LPAREN expr RPAREN .
+
+    $default  reduce using rule 21 (factor)
+
+
+state 31
+
+    9 expr: expr PLUS term .
+   12 term: term . MULTIPLY power
+   13     | term . DIVIDE power
+
+    MULTIPLY  shift, and go to state 26
+    DIVIDE    shift, and go to state 27
+
+    $default  reduce using rule 9 (expr)
+
+
+state 32
+
+   10 expr: expr MINUS term .
+   12 term: term . MULTIPLY power
+   13     | term . DIVIDE power
+
+    MULTIPLY  shift, and go to state 26
+    DIVIDE    shift, and go to state 27
+
+    $default  reduce using rule 10 (expr)
+
+
+state 33
+
+   12 term: term MULTIPLY power .
+   15 power: power . POWER unary
+
+    POWER  shift, and go to state 28
+
+    $default  reduce using rule 12 (term)
+
+
+state 34
+
+   13 term: term DIVIDE power .
+   15 power: power . POWER unary
+
+    POWER  shift, and go to state 28
+
+    $default  reduce using rule 13 (term)
+
+
+state 35
+
+   15 power: power POWER unary .
+
+    $default  reduce using rule 15 (power)
+
+
+state 36
+
+    5 line: IDENTIFIER ASSIGN expr EOL .
+
+    $default  reduce using rule 5 (line)
