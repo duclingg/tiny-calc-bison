@@ -10,15 +10,15 @@ extern int yylex();
 extern int yyparse();
 extern FILE *yyin;
 
-// variable storage
+// variable record
 typedef struct {
     char* name;
     double value;
 } variable;
 
-variable vars[100];
-int var_count = 0;
-int calc_count = 0;
+variable vars[100]; // store variables in an array
+int var_count = 0; // keep track of number of variables
+int calc_count = 0; // keep track of total calculations for i/o
 
 // function to find a variable by name
 int find_variable(char* name) {
@@ -78,6 +78,7 @@ program:
     | program line
     ;
 
+// go through operator precedences
 line: EOL { 
         calc_count++;
         printf("[%d] ", calc_count);
@@ -86,12 +87,14 @@ line: EOL {
         printf("=%g\n[%d] ", $1, calc_count + 1); 
         calc_count++;
     }
+    // assign value to variable
     | IDENTIFIER ASSIGN expr EOL {
         set_variable($1, $3);
         printf("Variable %s is assigned to %g\n[%d] ", $1, $3, calc_count + 1);
         free($1);
         calc_count++;
     }
+    // find variable via identifier
     | IDENTIFIER EOL {
         int index = find_variable($1);
         if (index >= 0) {
@@ -118,7 +121,7 @@ expr: term { $$ = $1; }
 term: power { $$ = $1; }
     | term MULTIPLY power { $$ = $1 * $3; }
     | term DIVIDE power { 
-        if ($3 == 0) {
+        if ($3 == 0) { // catch divide by zero
             printf("Error: \"divide by zero !!\" at calculation: %d\n[%d] ", 
                    calc_count, calc_count + 1);
             calc_count++;

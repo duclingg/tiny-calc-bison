@@ -40,11 +40,11 @@ This calculator is implemented using two tools:
 ### Parsing with yacc/bison
 The `tiny-calc.y` file defines the grammar rules and the actions to take when those rules are matched.  
 1. Token declarations  
-Define the types of tokens that can appear in the input
+Define the types of tokens that can appear in the input. Tokens are defined by the (f)lex file.  
 2. Precedence rules  
-Specify how operators associate and their relative precedence
+How operators associate and their relative precedence to other operators are specified using bottom-up parsing.
 3. Grammar rules  
-Define how tokens can be combined into valid expressions
+Define how tokens can be combined into valid expressions.
 4. Semantic actions  
 Code that executes when a rule is matched, typically calculating values  
 
@@ -67,7 +67,7 @@ The parser works through the input bottom-up, combining tokens into larger gramm
    - This starts the program for the user
 4. The program will take in a single line input: an arthimetic expression, variable definition
    - It will either calculate the given expression (if accepted), or store the variable definition (if accepted)
-5. The exit the program, enter `control + c` (Mac) in the Terminal
+5. The exit the program, enter `control (^) + c` (Mac) in the Terminal
 6. To start the program again, run `make clean` in the Terminal. Then go through steps 2-4 again.
 
 ## Example Output
